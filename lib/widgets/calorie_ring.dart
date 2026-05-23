@@ -79,7 +79,7 @@ class _CalorieRingState extends State<CalorieRing> with SingleTickerProviderStat
                       fontSize: 10,
                       fontWeight: FontWeight.w600,
                       color: Theme.of(context).brightness == Brightness.dark
-                          ? Colors.zinc.shade500
+                          ? Colors.grey.shade500
                           : Colors.grey.shade600,
                       letterSpacing: 1.2,
                     ),
@@ -101,7 +101,7 @@ class _CalorieRingState extends State<CalorieRing> with SingleTickerProviderStat
                     style: TextStyle(
                       fontSize: 10,
                       color: Theme.of(context).brightness == Brightness.dark
-                          ? Colors.zinc.shade400
+                          ? Colors.grey.shade400
                           : Colors.grey.shade500,
                     ),
                   ),

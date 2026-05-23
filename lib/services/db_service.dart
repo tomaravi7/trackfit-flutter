@@ -9,8 +9,6 @@ import '../models/food_log.dart';
 import '../models/workout_log.dart';
 import '../models/water_log.dart';
 import '../models/weight_log.dart';
-import '../models/workout_session.dart';
-import '../models/goals.dart';
 
 class DbService {
   sql.Database? _sqliteDb;

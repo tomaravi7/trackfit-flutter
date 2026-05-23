@@ -82,7 +82,7 @@ class _MainScreenState extends State<MainScreen> {
                             style: TextStyle(
                               fontSize: 8.5, 
                               fontWeight: FontWeight.bold, 
-                              color: isDark ? Colors.zinc.shade500 : Colors.grey.shade600,
+                              color: isDark ? Colors.grey.shade500 : Colors.grey.shade600,
                               letterSpacing: 1.1,
                             ),
                           ),
@@ -170,7 +170,7 @@ class _MainScreenState extends State<MainScreen> {
                   type: BottomNavigationBarType.fixed,
                   backgroundColor: isDark ? const Color(0xff0d0d12) : Colors.white,
                   selectedItemColor: const Color(0xff6366f1),
-                  unselectedItemColor: isDark ? Colors.zinc.shade500 : Colors.grey.shade600,
+                  unselectedItemColor: isDark ? Colors.grey.shade500 : Colors.grey.shade600,
                   selectedFontSize: 11,
                   unselectedFontSize: 11,
                   elevation: 8,
@@ -239,7 +239,7 @@ class _MainScreenState extends State<MainScreen> {
                   children: [
                     Text(
                       'VIEWING',
-                      style: TextStyle(fontSize: 8.5, fontWeight: FontWeight.bold, color: isDark ? Colors.zinc.shade500 : Colors.grey.shade600),
+                      style: TextStyle(fontSize: 8.5, fontWeight: FontWeight.bold, color: isDark ? Colors.grey.shade500 : Colors.grey.shade600),
                     ),
                     Text(
                       _formatFriendlyDate(state.activeDate),
@@ -287,7 +287,7 @@ class _MainScreenState extends State<MainScreen> {
                           Icon(
                             item['icon'] as IconData,
                             size: 18,
-                            color: active ? const Color(0xff818cf8) : (isDark ? Colors.zinc.shade400 : Colors.grey.shade700),
+                            color: active ? const Color(0xff818cf8) : (isDark ? Colors.grey.shade400 : Colors.grey.shade700),
                           ),
                           const SizedBox(width: 12),
                           Text(
@@ -295,7 +295,7 @@ class _MainScreenState extends State<MainScreen> {
                             style: TextStyle(
                               fontSize: 13,
                               fontWeight: active ? FontWeight.bold : FontWeight.normal,
-                              color: active ? const Color(0xff818cf8) : (isDark ? Colors.zinc.shade300 : Colors.grey.shade800),
+                              color: active ? const Color(0xff818cf8) : (isDark ? Colors.grey.shade300 : Colors.grey.shade800),
                             ),
                           ),
                         ],

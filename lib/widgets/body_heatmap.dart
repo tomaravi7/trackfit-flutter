@@ -1,4 +1,3 @@
-import 'dart:math';
 import 'package:flutter/material.dart';
 
 class MuscleGroup {
@@ -130,7 +129,7 @@ class _BodyHeatmapState extends State<BodyHeatmap> {
         Row(
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
-            Text('Cold', style: TextStyle(fontSize: 10, color: isDark ? Colors.zinc.shade500 : Colors.grey.shade500)),
+            Text('Cold', style: TextStyle(fontSize: 10, color: isDark ? Colors.grey.shade500 : Colors.grey.shade500)),
             const SizedBox(width: 6),
             Row(
               children: [
@@ -143,7 +142,7 @@ class _BodyHeatmapState extends State<BodyHeatmap> {
               ].map((c) => Container(width: 14, height: 8, color: c)).toList(),
             ),
             const SizedBox(width: 6),
-            Text('Hot', style: TextStyle(fontSize: 10, color: isDark ? Colors.zinc.shade500 : Colors.grey.shade500)),
+            Text('Hot', style: TextStyle(fontSize: 10, color: isDark ? Colors.grey.shade500 : Colors.grey.shade500)),
           ],
         ),
 
@@ -183,13 +182,13 @@ class _BodyHeatmapState extends State<BodyHeatmap> {
                             style: TextStyle(
                               fontSize: 14,
                               fontWeight: FontWeight.bold,
-                              color: isDark ? Colors.zinc.shade200 : Colors.grey.shade900,
+                              color: isDark ? Colors.grey.shade200 : Colors.grey.shade900,
                             ),
                           ),
                           const Spacer(),
                           Text(
                             '${muscleSets[selectedGroup.id] ?? 0} sets logged',
-                            style: TextStyle(fontSize: 12, color: isDark ? Colors.zinc.shade500 : Colors.grey.shade600),
+                            style: TextStyle(fontSize: 12, color: isDark ? Colors.grey.shade500 : Colors.grey.shade600),
                           ),
                         ],
                       ),
@@ -216,7 +215,7 @@ class _BodyHeatmapState extends State<BodyHeatmap> {
                       else
                         Text(
                           'No exercises logged for this muscle group today.',
-                          style: TextStyle(fontSize: 11, fontStyle: FontStyle.italic, color: isDark ? Colors.zinc.shade600 : Colors.grey.shade500),
+                          style: TextStyle(fontSize: 11, fontStyle: FontStyle.italic, color: isDark ? Colors.grey.shade600 : Colors.grey.shade500),
                         ),
                     ],
                   ),
@@ -244,7 +243,7 @@ class _BodyHeatmapState extends State<BodyHeatmap> {
           style: TextStyle(
             fontSize: 12,
             fontWeight: FontWeight.bold,
-            color: active ? Colors.white : (Theme.of(context).brightness == Brightness.dark ? Colors.zinc.shade400 : Colors.grey.shade700),
+            color: active ? Colors.white : (Theme.of(context).brightness == Brightness.dark ? Colors.grey.shade400 : Colors.grey.shade700),
           ),
         ),
       ),
@@ -263,7 +262,7 @@ class _BodyHeatmapState extends State<BodyHeatmap> {
             fontSize: 11,
             fontWeight: FontWeight.bold,
             letterSpacing: 1.2,
-            color: isDark ? Colors.zinc.shade400 : Colors.grey.shade600,
+            color: isDark ? Colors.grey.shade400 : Colors.grey.shade600,
           ),
         ),
         const SizedBox(height: 8),
@@ -357,7 +356,7 @@ class _SilhouettePainter extends CustomPainter {
     final center = Offset(size.width / 2, size.height / 2);
 
     final bgPaint = Paint()
-      ..color = isDark ? Colors.zinc.shade900.withOpacity(0.4) : Colors.grey.shade200.withOpacity(0.6)
+      ..color = isDark ? Colors.grey.shade900.withOpacity(0.4) : Colors.grey.shade200.withOpacity(0.6)
       ..style = PaintingStyle.fill;
 
     // Draw a simplified silhouette using oval and rect paths to mimic body segments

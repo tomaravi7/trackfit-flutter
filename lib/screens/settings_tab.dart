@@ -122,7 +122,7 @@ class _SettingsTabState extends State<SettingsTab> {
                 const SizedBox(height: 4),
                 Text(
                   'Switch between dark and light themes.',
-                  style: TextStyle(fontSize: 10, color: isDark ? Colors.zinc.shade500 : Colors.grey.shade600),
+                  style: TextStyle(fontSize: 10, color: isDark ? Colors.grey.shade500 : Colors.grey.shade600),
                 ),
                 const SizedBox(height: 12),
                 ElevatedButton.icon(
@@ -131,7 +131,7 @@ class _SettingsTabState extends State<SettingsTab> {
                   label: Text('Use ${isDark ? 'Light' : 'Dark'} Theme'),
                   style: ElevatedButton.styleFrom(
                     backgroundColor: isDark ? const Color(0xff181822) : Colors.grey.shade100,
-                    foregroundColor: isDark ? Colors.zinc.shade300 : Colors.grey.shade800,
+                    foregroundColor: isDark ? Colors.grey.shade300 : Colors.grey.shade800,
                     minimumSize: const Size(double.infinity, 38),
                     shadowColor: Colors.transparent,
                     shape: RoundedRectangleBorder(
@@ -152,7 +152,7 @@ class _SettingsTabState extends State<SettingsTab> {
               children: [
                 Row(
                   children: [
-                    Icon(Icons.spa, size: 16, color: Colors.sky.shade400),
+                    Icon(Icons.spa, size: 16, color: Colors.lightBlue.shade400),
                     const SizedBox(width: 8),
                     const Text('Wellness Preferences', style: TextStyle(fontSize: 13, fontWeight: FontWeight.bold)),
                   ],
@@ -274,7 +274,7 @@ class _SettingsTabState extends State<SettingsTab> {
                 const SizedBox(height: 4),
                 Text(
                   'Synchronize your data with an external PostgreSQL server.',
-                  style: TextStyle(fontSize: 10, color: isDark ? Colors.zinc.shade500 : Colors.grey.shade600),
+                  style: TextStyle(fontSize: 10, color: isDark ? Colors.grey.shade500 : Colors.grey.shade600),
                 ),
                 const SizedBox(height: 12),
                 Container(
@@ -448,7 +448,7 @@ class _SettingsTabState extends State<SettingsTab> {
           style: TextStyle(
             fontSize: 11,
             fontWeight: FontWeight.bold,
-            color: active ? Colors.white : (Theme.of(context).brightness == Brightness.dark ? Colors.zinc.shade400 : Colors.grey.shade800),
+            color: active ? Colors.white : (Theme.of(context).brightness == Brightness.dark ? Colors.grey.shade400 : Colors.grey.shade800),
           ),
         ),
       ),
@@ -462,7 +462,7 @@ class _SettingsTabState extends State<SettingsTab> {
       children: [
         Text(
           label,
-          style: TextStyle(fontSize: 11, color: isDark ? Colors.zinc.shade400 : Colors.grey.shade700),
+          style: TextStyle(fontSize: 11, color: isDark ? Colors.grey.shade400 : Colors.grey.shade700),
         ),
         const SizedBox(height: 4),
         SizedBox(

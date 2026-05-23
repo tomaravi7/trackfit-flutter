@@ -1,8 +1,10 @@
+import 'dart:math';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:fl_chart/fl_chart.dart';
 import 'package:intl/intl.dart';
 import '../services/state_service.dart';
+import '../models/weight_log.dart';
 import '../widgets/glass_card.dart';
 import '../widgets/body_heatmap.dart';
 
@@ -90,7 +92,7 @@ class _InsightsTabState extends State<InsightsTab> {
             style: TextStyle(
               fontSize: 11,
               fontWeight: FontWeight.bold,
-              color: active ? Colors.white : (isDark ? Colors.zinc.shade400 : Colors.grey.shade700),
+              color: active ? Colors.white : (isDark ? Colors.grey.shade400 : Colors.grey.shade700),
             ),
           ),
         ),
@@ -234,7 +236,7 @@ class _InsightsTabState extends State<InsightsTab> {
                   children: [
                     const Text('LOW', style: TextStyle(fontSize: 10, color: Colors.grey, fontWeight: FontWeight.bold)),
                     const SizedBox(height: 4),
-                    Text('${minW.toStringAsFixed(1)} ${state.weightUnit}', style: const TextStyle(fontSize: 14, fontWeight: FontWeight.bold, color: Colors.emerald)),
+                    Text('${minW.toStringAsFixed(1)} ${state.weightUnit}', style: const TextStyle(fontSize: 14, fontWeight: FontWeight.bold, color: Colors.green)),
                   ],
                 ),
               ),
@@ -303,13 +305,13 @@ class _InsightsTabState extends State<InsightsTab> {
     
     // Bar chart points
     final List<BarChartGroupData> barGroups = [
-      BarChartGroupData(x: 0, barRods: [BarChartRodData(toY: 2000, color: Colors.sky, width: 14, borderRadius: BorderRadius.circular(4))]),
-      BarChartGroupData(x: 1, barRods: [BarChartRodData(toY: 2500, color: Colors.sky, width: 14, borderRadius: BorderRadius.circular(4))]),
-      BarChartGroupData(x: 2, barRods: [BarChartRodData(toY: 1800, color: Colors.sky, width: 14, borderRadius: BorderRadius.circular(4))]),
-      BarChartGroupData(x: 3, barRods: [BarChartRodData(toY: 2200, color: Colors.sky, width: 14, borderRadius: BorderRadius.circular(4))]),
-      BarChartGroupData(x: 4, barRods: [BarChartRodData(toY: 3000, color: Colors.sky, width: 14, borderRadius: BorderRadius.circular(4))]),
-      BarChartGroupData(x: 5, barRods: [BarChartRodData(toY: 2400, color: Colors.sky, width: 14, borderRadius: BorderRadius.circular(4))]),
-      BarChartGroupData(x: 6, barRods: [BarChartRodData(toY: state.totalWaterMl.toDouble(), color: Colors.sky, width: 14, borderRadius: BorderRadius.circular(4))]),
+      BarChartGroupData(x: 0, barRods: [BarChartRodData(toY: 2000, color: Colors.lightBlue, width: 14, borderRadius: BorderRadius.circular(4))]),
+      BarChartGroupData(x: 1, barRods: [BarChartRodData(toY: 2500, color: Colors.lightBlue, width: 14, borderRadius: BorderRadius.circular(4))]),
+      BarChartGroupData(x: 2, barRods: [BarChartRodData(toY: 1800, color: Colors.lightBlue, width: 14, borderRadius: BorderRadius.circular(4))]),
+      BarChartGroupData(x: 3, barRods: [BarChartRodData(toY: 2200, color: Colors.lightBlue, width: 14, borderRadius: BorderRadius.circular(4))]),
+      BarChartGroupData(x: 4, barRods: [BarChartRodData(toY: 3000, color: Colors.lightBlue, width: 14, borderRadius: BorderRadius.circular(4))]),
+      BarChartGroupData(x: 5, barRods: [BarChartRodData(toY: 2400, color: Colors.lightBlue, width: 14, borderRadius: BorderRadius.circular(4))]),
+      BarChartGroupData(x: 6, barRods: [BarChartRodData(toY: state.totalWaterMl.toDouble(), color: Colors.lightBlue, width: 14, borderRadius: BorderRadius.circular(4))]),
     ];
 
     return Column(
@@ -377,7 +379,7 @@ class _InsightsTabState extends State<InsightsTab> {
                   child: Center(
                     child: Text(
                       'No workouts logged in history yet.',
-                      style: TextStyle(fontSize: 11, fontStyle: FontStyle.italic, color: isDark ? Colors.zinc.shade600 : Colors.grey.shade500),
+                      style: TextStyle(fontSize: 11, fontStyle: FontStyle.italic, color: isDark ? Colors.grey.shade600 : Colors.grey.shade500),
                     ),
                   ),
                 )

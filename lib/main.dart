@@ -34,7 +34,6 @@ class TrackFitApp extends StatelessWidget {
           primary: Color(0xff4f46e5),
           secondary: Color(0xff6366f1),
           surface: Colors.white,
-          background: Color(0xfff9fafb),
         ),
         scaffoldBackgroundColor: const Color(0xfff9fafb),
         textTheme: GoogleFonts.interTextTheme(ThemeData.light().textTheme).copyWith(
@@ -46,7 +45,7 @@ class TrackFitApp extends StatelessWidget {
           ),
           headlineMedium: GoogleFonts.plusJakartaSans(
             textStyle: ThemeData.light().textTheme.headlineMedium?.copyWith(
-                  fontWeight: FontWeight.extrabold,
+                  fontWeight: FontWeight.w800,
                   letterSpacing: -1.0,
                 ),
           ),
@@ -62,7 +61,6 @@ class TrackFitApp extends StatelessWidget {
           primary: Color(0xff4f46e5),
           secondary: Color(0xff818cf8),
           surface: Color(0xff0d0d12),
-          background: Color(0xff07070c),
         ),
         scaffoldBackgroundColor: const Color(0xff07070c),
         textTheme: GoogleFonts.interTextTheme(ThemeData.dark().textTheme).copyWith(
@@ -75,7 +73,7 @@ class TrackFitApp extends StatelessWidget {
           ),
           headlineMedium: GoogleFonts.plusJakartaSans(
             textStyle: ThemeData.dark().textTheme.headlineMedium?.copyWith(
-                  fontWeight: FontWeight.extrabold,
+                  fontWeight: FontWeight.w800,
                   letterSpacing: -1.0,
                   color: Colors.white,
                 ),

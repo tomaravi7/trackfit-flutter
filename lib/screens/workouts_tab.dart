@@ -80,7 +80,7 @@ class _WorkoutsTabState extends State<WorkoutsTab> {
                 mainAxisSize: MainAxisSize.min,
                 children: [
                   DropdownButtonFormField<String>(
-                    value: selectedExercise,
+                    initialValue: selectedExercise,
                     dropdownColor: isDark ? const Color(0xff121219) : Colors.white,
                     decoration: const InputDecoration(labelText: 'Select Exercise'),
                     items: _commonExercises
@@ -242,14 +242,14 @@ class _WorkoutsTabState extends State<WorkoutsTab> {
                   padding: const EdgeInsets.symmetric(vertical: 36),
                   child: Column(
                     children: [
-                      Icon(Icons.fitness_center, size: 36, color: isDark ? Colors.zinc.shade600 : Colors.grey.shade400),
+                      Icon(Icons.fitness_center, size: 36, color: isDark ? Colors.grey.shade600 : Colors.grey.shade400),
                       const SizedBox(height: 12),
                       Text(
                         'No workouts logged today.',
                         style: TextStyle(
                           fontSize: 12,
                           fontStyle: FontStyle.italic,
-                          color: isDark ? Colors.zinc.shade600 : Colors.grey.shade500,
+                          color: isDark ? Colors.grey.shade600 : Colors.grey.shade500,
                         ),
                       ),
                     ],
@@ -278,7 +278,7 @@ class _WorkoutsTabState extends State<WorkoutsTab> {
                               Text(exName, style: const TextStyle(fontSize: 13, fontWeight: FontWeight.bold)),
                               Text(
                                 '${sets.length} sets',
-                                style: TextStyle(fontSize: 11, color: isDark ? Colors.zinc.shade500 : Colors.grey.shade500),
+                                style: TextStyle(fontSize: 11, color: isDark ? Colors.grey.shade500 : Colors.grey.shade500),
                               ),
                             ],
                           ),
@@ -309,7 +309,7 @@ class _WorkoutsTabState extends State<WorkoutsTab> {
                                         style: const TextStyle(fontSize: 12, fontWeight: FontWeight.bold),
                                       ),
                                       const SizedBox(width: 8),
-                                      Text('×', style: TextStyle(fontSize: 11, color: isDark ? Colors.zinc.shade600 : Colors.grey.shade500)),
+                                      Text('×', style: TextStyle(fontSize: 11, color: isDark ? Colors.grey.shade600 : Colors.grey.shade500)),
                                       const SizedBox(width: 8),
                                       Text(
                                         '${log.reps} reps',

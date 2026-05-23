@@ -80,7 +80,7 @@ class _MealsTabState extends State<MealsTab> {
               mainAxisSize: MainAxisSize.min,
               children: [
                 DropdownButtonFormField<String>(
-                  value: _selectedMealType,
+                  initialValue: _selectedMealType,
                   dropdownColor: isDark ? const Color(0xff121219) : Colors.white,
                   decoration: const InputDecoration(labelText: 'Meal Type'),
                   items: ['Breakfast', 'Lunch', 'Dinner', 'Snack']
@@ -177,7 +177,7 @@ class _MealsTabState extends State<MealsTab> {
                         style: TextStyle(
                           fontSize: 10,
                           fontWeight: FontWeight.bold,
-                          color: isDark ? Colors.zinc.shade500 : Colors.grey.shade500,
+                          color: isDark ? Colors.grey.shade500 : Colors.grey.shade500,
                           letterSpacing: 1.2,
                         ),
                       ),
@@ -221,7 +221,7 @@ class _MealsTabState extends State<MealsTab> {
                           const Text('Everyday Favorites', style: TextStyle(fontSize: 13, fontWeight: FontWeight.bold)),
                           Text(
                             '1-click to quickly log your standard daily staples',
-                            style: TextStyle(fontSize: 10, color: isDark ? Colors.zinc.shade500 : Colors.grey.shade600),
+                            style: TextStyle(fontSize: 10, color: isDark ? Colors.grey.shade500 : Colors.grey.shade600),
                           ),
                         ],
                       ),
@@ -276,7 +276,7 @@ class _MealsTabState extends State<MealsTab> {
                               ),
                               Text(
                                 '${fav['qty'].round()}${fav['unit']}',
-                                style: TextStyle(fontSize: 8.5, color: isDark ? Colors.zinc.shade500 : Colors.grey.shade600),
+                                style: TextStyle(fontSize: 8.5, color: isDark ? Colors.grey.shade500 : Colors.grey.shade600),
                               ),
                             ],
                           ),
@@ -322,7 +322,7 @@ class _MealsTabState extends State<MealsTab> {
                           padding: const EdgeInsets.all(16.0),
                           child: Text(
                             'No items logged for $mt.',
-                            style: TextStyle(fontSize: 11, fontStyle: FontStyle.italic, color: isDark ? Colors.zinc.shade600 : Colors.grey.shade500),
+                            style: TextStyle(fontSize: 11, fontStyle: FontStyle.italic, color: isDark ? Colors.grey.shade600 : Colors.grey.shade500),
                           ),
                         )
                       else
@@ -351,7 +351,7 @@ class _MealsTabState extends State<MealsTab> {
                                         ),
                                         Text(
                                           '${log.quantity.round()} ${log.servingUnit} · ${log.calories.round()} kcal · P: ${log.protein.round()}g · C: ${log.carbs.round()}g · F: ${log.fat.round()}g',
-                                          style: TextStyle(fontSize: 9.5, color: isDark ? Colors.zinc.shade500 : Colors.grey.shade500),
+                                          style: TextStyle(fontSize: 9.5, color: isDark ? Colors.grey.shade500 : Colors.grey.shade500),
                                         ),
                                       ],
                                     ),

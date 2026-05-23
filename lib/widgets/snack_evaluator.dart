@@ -160,7 +160,7 @@ class _SnackEvaluatorState extends State<SnackEvaluator> with SingleTickerProvid
           const SizedBox(height: 4),
           Text(
             'Check a snack against your remaining daily budget.',
-            style: TextStyle(fontSize: 11, color: isDark ? Colors.zinc.shade500 : Colors.grey.shade600),
+            style: TextStyle(fontSize: 11, color: isDark ? Colors.grey.shade500 : Colors.grey.shade600),
           ),
           const SizedBox(height: 12),
 
@@ -171,7 +171,7 @@ class _SnackEvaluatorState extends State<SnackEvaluator> with SingleTickerProvid
                 width: 45,
                 child: Text(
                   'Item',
-                  style: TextStyle(fontSize: 12, color: isDark ? Colors.zinc.shade400 : Colors.grey.shade700),
+                  style: TextStyle(fontSize: 12, color: isDark ? Colors.grey.shade400 : Colors.grey.shade700),
                 ),
               ),
               Expanded(
@@ -231,7 +231,7 @@ class _SnackEvaluatorState extends State<SnackEvaluator> with SingleTickerProvid
                     "${preset['emoji']} ${preset['name']}",
                     style: TextStyle(
                       fontSize: 10,
-                      color: isDark ? Colors.zinc.shade400 : Colors.grey.shade700,
+                      color: isDark ? Colors.grey.shade400 : Colors.grey.shade700,
                     ),
                   ),
                 ),
@@ -321,7 +321,7 @@ class _SnackEvaluatorState extends State<SnackEvaluator> with SingleTickerProvid
                       _verdict!['justification'],
                       style: TextStyle(
                         fontSize: 12,
-                        color: isDark ? Colors.zinc.shade300 : Colors.grey.shade800,
+                        color: isDark ? Colors.grey.shade300 : Colors.grey.shade800,
                       ),
                     ),
                     const SizedBox(height: 8),
@@ -332,7 +332,7 @@ class _SnackEvaluatorState extends State<SnackEvaluator> with SingleTickerProvid
                         style: TextStyle(
                           fontSize: 11,
                           decoration: TextDecoration.underline,
-                          color: isDark ? Colors.zinc.shade500 : Colors.grey.shade500,
+                          color: isDark ? Colors.grey.shade500 : Colors.grey.shade500,
                         ),
                       ),
                     ),
@@ -345,7 +345,7 @@ class _SnackEvaluatorState extends State<SnackEvaluator> with SingleTickerProvid
               onPressed: _runAnalysis,
               style: ElevatedButton.styleFrom(
                 backgroundColor: isDark ? const Color(0xff1e1e2c) : Colors.grey.shade100,
-                foregroundColor: isDark ? Colors.zinc.shade300 : Colors.grey.shade800,
+                foregroundColor: isDark ? Colors.grey.shade300 : Colors.grey.shade800,
                 shadowColor: Colors.transparent,
                 elevation: 0,
                 minimumSize: const Size(double.infinity, 38),
@@ -371,7 +371,7 @@ class _SnackEvaluatorState extends State<SnackEvaluator> with SingleTickerProvid
         children: [
           Text(
             label,
-            style: TextStyle(fontSize: 9.5, color: isDark ? Colors.zinc.shade500 : Colors.grey.shade600, fontWeight: FontWeight.bold),
+            style: TextStyle(fontSize: 9.5, color: isDark ? Colors.grey.shade500 : Colors.grey.shade600, fontWeight: FontWeight.bold),
           ),
           const SizedBox(height: 3),
           SizedBox(

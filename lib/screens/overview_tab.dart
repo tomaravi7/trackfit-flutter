@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import '../services/state_service.dart';
+import '../models/weight_log.dart';
 import '../widgets/calorie_ring.dart';
 import '../widgets/glass_card.dart';
 import '../widgets/water_wave.dart';
@@ -227,7 +228,7 @@ class _OverviewTabState extends State<OverviewTab> {
         children: [
           Row(
             children: [
-              Icon(Icons.water_drop, size: 16, color: Colors.sky.shade400),
+              Icon(Icons.water_drop, size: 16, color: Colors.lightBlue.shade400),
               const SizedBox(width: 6),
               const Text('Water', style: TextStyle(fontSize: 13, fontWeight: FontWeight.bold)),
             ],
@@ -235,11 +236,11 @@ class _OverviewTabState extends State<OverviewTab> {
           const SizedBox(height: 8),
           Text(
             '${currentWaterL.toStringAsFixed(1)}L',
-            style: TextStyle(fontSize: 20, fontWeight: FontWeight.black, color: Colors.sky.shade300),
+            style: TextStyle(fontSize: 20, fontWeight: FontWeight.w900, color: Colors.lightBlue.shade300),
           ),
           Text(
             'of ${waterGoalL.toStringAsFixed(1)}L',
-            style: TextStyle(fontSize: 11, color: isDark ? Colors.zinc.shade500 : Colors.grey.shade600),
+            style: TextStyle(fontSize: 11, color: isDark ? Colors.grey.shade500 : Colors.grey.shade600),
           ),
           const SizedBox(height: 8),
           WaterWave(percentage: pct),
@@ -251,14 +252,14 @@ class _OverviewTabState extends State<OverviewTab> {
               return ElevatedButton(
                 onPressed: () => state.logWater(ml),
                 style: ElevatedButton.styleFrom(
-                  backgroundColor: isDark ? const Color(0xff0c2135) : Colors.sky.shade50,
-                  foregroundColor: isDark ? const Color(0xff7dd3fc) : Colors.sky.shade800,
+                  backgroundColor: isDark ? const Color(0xff0c2135) : Colors.lightBlue.shade50,
+                  foregroundColor: isDark ? const Color(0xff7dd3fc) : Colors.lightBlue.shade800,
                   shadowColor: Colors.transparent,
                   minimumSize: const Size(0, 26),
                   padding: const EdgeInsets.symmetric(horizontal: 8),
                   shape: RoundedRectangleBorder(
                     borderRadius: BorderRadius.circular(6),
-                    side: BorderSide(color: isDark ? const Color(0xff0369a1).withOpacity(0.4) : Colors.sky.shade200),
+                    side: BorderSide(color: isDark ? const Color(0xff0369a1).withOpacity(0.4) : Colors.lightBlue.shade200),
                   ),
                 ),
                 child: Text('+$ml', style: const TextStyle(fontSize: 10, fontWeight: FontWeight.bold)),
@@ -278,7 +279,7 @@ class _OverviewTabState extends State<OverviewTab> {
         children: [
           Row(
             children: [
-              Icon(Icons.monitor_weight, size: 16, color: Colors.violet.shade400),
+              Icon(Icons.monitor_weight, size: 16, color: Colors.purple.shade400),
               const SizedBox(width: 6),
               const Text('Weight', style: TextStyle(fontSize: 13, fontWeight: FontWeight.bold)),
             ],
@@ -287,16 +288,16 @@ class _OverviewTabState extends State<OverviewTab> {
           if (log != null) ...[
             Text(
               '${log.weight} ${state.weightUnit}',
-              style: TextStyle(fontSize: 20, fontWeight: FontWeight.black, color: Colors.violet.shade300),
+              style: TextStyle(fontSize: 20, fontWeight: FontWeight.w900, color: Colors.purple.shade300),
             ),
             Text(
               'logged today',
-              style: TextStyle(fontSize: 11, color: isDark ? Colors.zinc.shade500 : Colors.grey.shade600),
+              style: TextStyle(fontSize: 11, color: isDark ? Colors.grey.shade500 : Colors.grey.shade600),
             ),
             if (log.bodyFat != null)
               Text(
                 'Body Fat: ${log.bodyFat}%',
-                style: TextStyle(fontSize: 11, color: isDark ? Colors.zinc.shade400 : Colors.grey.shade600),
+                style: TextStyle(fontSize: 11, color: isDark ? Colors.grey.shade400 : Colors.grey.shade600),
               ),
             const SizedBox(height: 8),
             // Weight shift indicator
@@ -309,7 +310,7 @@ class _OverviewTabState extends State<OverviewTab> {
                   style: TextStyle(
                     fontSize: 12,
                     fontWeight: FontWeight.bold,
-                    color: diff > 0 ? Colors.orange : Colors.emerald,
+                    color: diff > 0 ? Colors.orange : Colors.green,
                   ),
                 );
               }()
@@ -358,13 +359,13 @@ class _OverviewTabState extends State<OverviewTab> {
                 }
               },
               style: ElevatedButton.styleFrom(
-                backgroundColor: isDark ? const Color(0xff2e1c45) : Colors.violet.shade50,
-                foregroundColor: isDark ? const Color(0xffc084fc) : Colors.violet.shade800,
+                backgroundColor: isDark ? const Color(0xff2e1c45) : Colors.purple.shade50,
+                foregroundColor: isDark ? const Color(0xffc084fc) : Colors.purple.shade800,
                 shadowColor: Colors.transparent,
                 minimumSize: const Size(double.infinity, 28),
                 shape: RoundedRectangleBorder(
                   borderRadius: BorderRadius.circular(6),
-                  side: BorderSide(color: isDark ? const Color(0xff6b21a8).withOpacity(0.4) : Colors.violet.shade200),
+                  side: BorderSide(color: isDark ? const Color(0xff6b21a8).withOpacity(0.4) : Colors.purple.shade200),
                 ),
               ),
               child: const Text('Log Weight', style: TextStyle(fontSize: 11, fontWeight: FontWeight.bold)),
