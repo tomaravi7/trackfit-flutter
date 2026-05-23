@@ -1,7 +1,9 @@
 import 'dart:async';
+import 'dart:io' show Platform;
 import 'package:path/path.dart' as p;
 import 'package:path_provider/path_provider.dart';
 import 'package:sqflite/sqflite.dart' as sql;
+import 'package:sqflite_common_ffi/sqflite_ffi.dart';
 import 'package:postgres/postgres.dart' as pg;
 import 'package:shared_preferences/shared_preferences.dart';
 
@@ -9,6 +11,7 @@ import '../models/food_log.dart';
 import '../models/workout_log.dart';
 import '../models/water_log.dart';
 import '../models/weight_log.dart';
+import '../models/workout_session.dart';
 
 class DbService {
   sql.Database? _sqliteDb;
@@ -63,6 +66,11 @@ class DbService {
     }
 
     // Fallback to SQLite
+    if (Platform.isWindows || Platform.isLinux || Platform.isMacOS) {
+      sqfliteFfiInit();
+      sql.databaseFactory = databaseFactoryFfi;
+    }
+
     final documentsDirectory = await getApplicationDocumentsDirectory();
     final path = p.join(documentsDirectory.path, "trackfit.db");
     _sqliteDb = await sql.openDatabase(
@@ -134,22 +142,27 @@ class DbService {
           pg.Sql.named('SELECT id, date, food_name, quantity, calories, protein, carbs, fiber, fat, meal_type, serving_unit, created_at FROM food_logs WHERE date = @date'),
           parameters: {'date': date},
         );
-        return result.map((row) => FoodLog(
-          id: row[0] as int?,
-          date: row[1] as String,
-          foodName: row[2] as String,
-          quantity: (row[3] as num).toDouble(),
-          calories: (row[4] as num).toDouble(),
-          protein: (row[5] as num).toDouble(),
-          carbs: (row[6] as num).toDouble(),
-          fiber: (row[7] as num).toDouble(),
-          fat: (row[8] as num).toDouble(),
-          mealType: row[9] as String,
-          servingUnit: row[10] as String,
-          createdAt: row[11]?.toString(),
-        )).toList();
+        return result.map((row) {
+          String dateStr = row[1] is DateTime
+              ? "${(row[1] as DateTime).year}-${(row[1] as DateTime).month.toString().padLeft(2, '0')}-${(row[1] as DateTime).day.toString().padLeft(2, '0')}"
+              : row[1].toString();
+          return FoodLog(
+            id: row[0] as int?,
+            date: dateStr,
+            foodName: row[2] as String,
+            quantity: (row[3] as num).toDouble(),
+            calories: (row[4] as num).toDouble(),
+            protein: (row[5] as num).toDouble(),
+            carbs: (row[6] as num).toDouble(),
+            fiber: (row[7] as num).toDouble(),
+            fat: (row[8] as num).toDouble(),
+            mealType: row[9] as String,
+            servingUnit: row[10] as String,
+            createdAt: row[11]?.toString(),
+          );
+        }).toList();
       } catch (e) {
-        // dynamic local fallback on query error
+        // fallback
       }
     }
 
@@ -204,22 +217,62 @@ class DbService {
     await _sqliteDb!.delete('food_logs', where: 'id = ?', whereArgs: [id]);
   }
 
+  Future<List<FoodLog>> getAllFoodLogs() async {
+    if (_usePostgres && _postgresDb != null) {
+      try {
+        final result = await _postgresDb!.execute(
+          'SELECT id, date, food_name, quantity, calories, protein, carbs, fiber, fat, meal_type, serving_unit FROM food_logs ORDER BY date ASC'
+        );
+        return result.map((row) {
+          String dateStr = row[1] is DateTime
+              ? "${(row[1] as DateTime).year}-${(row[1] as DateTime).month.toString().padLeft(2, '0')}-${(row[1] as DateTime).day.toString().padLeft(2, '0')}"
+              : row[1].toString();
+          return FoodLog(
+            id: row[0] as int?,
+            date: dateStr,
+            foodName: row[2] as String,
+            quantity: (row[3] as num).toDouble(),
+            calories: (row[4] as num).toDouble(),
+            protein: (row[5] as num).toDouble(),
+            carbs: (row[6] as num).toDouble(),
+            fiber: (row[7] as num).toDouble(),
+            fat: (row[8] as num).toDouble(),
+            mealType: row[9] as String,
+            servingUnit: row[10] as String,
+          );
+        }).toList();
+      } catch (e) {
+        // fallback
+      }
+    }
+    final List<Map<String, dynamic>> maps = await _sqliteDb!.query(
+      'food_logs',
+      orderBy: 'date ASC',
+    );
+    return maps.map((m) => FoodLog.fromJson(m)).toList();
+  }
+
   // ─── WORKOUT LOGS ──────────────────────────────────────────────────────────
   Future<List<WorkoutLog>> getWorkoutLogs(String date) async {
     if (_usePostgres && _postgresDb != null) {
       try {
         final result = await _postgresDb!.execute(
-          pg.Sql.named('SELECT id, date, exercise_name, weight, reps, set_number FROM workout_logs WHERE date = @date ORDER BY set_number ASC'),
+          pg.Sql.named('SELECT id, date, exercise_name, weight, reps, set_number FROM workouts WHERE date = @date ORDER BY set_number ASC'),
           parameters: {'date': date},
         );
-        return result.map((row) => WorkoutLog(
-          id: row[0] as int?,
-          date: row[1] as String,
-          exerciseName: row[2] as String,
-          weight: (row[3] as num).toDouble(),
-          reps: row[4] as int,
-          setNumber: row[5] as int,
-        )).toList();
+        return result.map((row) {
+          String dateStr = row[1] is DateTime
+              ? "${(row[1] as DateTime).year}-${(row[1] as DateTime).month.toString().padLeft(2, '0')}-${(row[1] as DateTime).day.toString().padLeft(2, '0')}"
+              : row[1].toString();
+          return WorkoutLog(
+            id: row[0] as int?,
+            date: dateStr,
+            exerciseName: row[2] as String,
+            weight: (row[3] as num).toDouble(),
+            reps: row[4] as int,
+            setNumber: row[5] as int,
+          );
+        }).toList();
       } catch (e) {
         // fallback
       }
@@ -237,7 +290,7 @@ class DbService {
     if (_usePostgres && _postgresDb != null) {
       try {
         final res = await _postgresDb!.execute(
-          pg.Sql.named('INSERT INTO workout_logs (date, exercise_name, weight, reps, set_number) '
+          pg.Sql.named('INSERT INTO workouts (date, exercise_name, weight, reps, set_number) '
               'VALUES (@date, @exercise_name, @weight, @reps, @set_number) RETURNING id'),
           parameters: {
             'date': log.date,
@@ -259,7 +312,7 @@ class DbService {
     if (_usePostgres && _postgresDb != null) {
       try {
         await _postgresDb!.execute(
-          pg.Sql.named('DELETE FROM workout_logs WHERE id = @id'),
+          pg.Sql.named('DELETE FROM workouts WHERE id = @id'),
           parameters: {'id': id},
         );
         return;
@@ -275,14 +328,19 @@ class DbService {
     if (_usePostgres && _postgresDb != null) {
       try {
         final result = await _postgresDb!.execute(
-          pg.Sql.named('SELECT id, date, amount FROM water_logs WHERE date = @date'),
+          pg.Sql.named('SELECT id, date, amount_ml FROM water_logs WHERE date = @date'),
           parameters: {'date': date},
         );
-        return result.map((row) => WaterLog(
-          id: row[0] as int?,
-          date: row[1] as String,
-          amount: row[2] as int,
-        )).toList();
+        return result.map((row) {
+          String dateStr = row[1] is DateTime
+              ? "${(row[1] as DateTime).year}-${(row[1] as DateTime).month.toString().padLeft(2, '0')}-${(row[1] as DateTime).day.toString().padLeft(2, '0')}"
+              : row[1].toString();
+          return WaterLog(
+            id: row[0] as int?,
+            date: dateStr,
+            amount: row[2] as int,
+          );
+        }).toList();
       } catch (e) {
         // fallback
       }
@@ -299,7 +357,7 @@ class DbService {
     if (_usePostgres && _postgresDb != null) {
       try {
         final res = await _postgresDb!.execute(
-          pg.Sql.named('INSERT INTO water_logs (date, amount) VALUES (@date, @amount) RETURNING id'),
+          pg.Sql.named('INSERT INTO water_logs (date, amount_ml) VALUES (@date, @amount) RETURNING id'),
           parameters: {
             'date': log.date,
             'amount': log.amount,
@@ -313,6 +371,21 @@ class DbService {
     return await _sqliteDb!.insert('water_logs', log.toJson());
   }
 
+  Future<void> deleteWaterLog(int id) async {
+    if (_usePostgres && _postgresDb != null) {
+      try {
+        await _postgresDb!.execute(
+          pg.Sql.named('DELETE FROM water_logs WHERE id = @id'),
+          parameters: {'id': id},
+        );
+        return;
+      } catch (e) {
+        // fallback
+      }
+    }
+    await _sqliteDb!.delete('water_logs', where: 'id = ?', whereArgs: [id]);
+  }
+
   // ─── WEIGHT LOGS ─────────────────────────────────────────────────────────────
   Future<WeightLog?> getWeightLog(String date) async {
     if (_usePostgres && _postgresDb != null) {
@@ -323,9 +396,12 @@ class DbService {
         );
         if (result.isNotEmpty) {
           final row = result.first;
+          String dateStr = row[1] is DateTime
+              ? "${(row[1] as DateTime).year}-${(row[1] as DateTime).month.toString().padLeft(2, '0')}-${(row[1] as DateTime).day.toString().padLeft(2, '0')}"
+              : row[1].toString();
           return WeightLog(
             id: row[0] as int?,
-            date: row[1] as String,
+            date: dateStr,
             weight: (row[2] as num).toDouble(),
             bodyFat: row[3] != null ? (row[3] as num).toDouble() : null,
           );
@@ -350,12 +426,11 @@ class DbService {
   Future<int> insertWeightLog(WeightLog log) async {
     if (_usePostgres && _postgresDb != null) {
       try {
-        // Upsert weight entry for date
         final res = await _postgresDb!.execute(
           pg.Sql.named(
             'INSERT INTO weight_logs (date, weight, body_fat) VALUES (@date, @weight, @body_fat) '
             'ON CONFLICT (date) DO UPDATE SET weight = EXCLUDED.weight, body_fat = EXCLUDED.body_fat '
-            'RETURNING id'
+            'RETURNING id',
           ),
           parameters: {
             'date': log.date,
@@ -368,7 +443,6 @@ class DbService {
         // fallback
       }
     }
-    // SQLite local upsert
     final existing = await getWeightLog(log.date);
     if (existing != null) {
       await _sqliteDb!.update(
@@ -382,6 +456,125 @@ class DbService {
     return await _sqliteDb!.insert('weight_logs', log.toJson());
   }
 
+  // ─── WORKOUT SESSIONS ──────────────────────────────────────────────────────
+  Future<WorkoutSession?> getWorkoutSession(String date) async {
+    if (_usePostgres && _postgresDb != null) {
+      try {
+        final result = await _postgresDb!.execute(
+          pg.Sql.named('SELECT id, date, duration_minutes, energy_level, notes FROM workout_sessions WHERE date = @date LIMIT 1'),
+          parameters: {'date': date},
+        );
+        if (result.isNotEmpty) {
+          final row = result.first;
+          String dateStr = row[1] is DateTime
+              ? "${(row[1] as DateTime).year}-${(row[1] as DateTime).month.toString().padLeft(2, '0')}-${(row[1] as DateTime).day.toString().padLeft(2, '0')}"
+              : row[1].toString();
+          return WorkoutSession(
+            id: row[0] as int?,
+            date: dateStr,
+            duration: row[2] as int,
+            energy: (row[3] as num).toDouble(),
+            notes: row[4] as String? ?? '',
+          );
+        }
+        return null;
+      } catch (e) {
+        // fallback
+      }
+    }
+
+    final List<Map<String, dynamic>> maps = await _sqliteDb!.query(
+      'workout_sessions',
+      where: 'date = ?',
+      whereArgs: [date],
+      limit: 1,
+    );
+    if (maps.isNotEmpty) {
+      return WorkoutSession.fromJson(maps.first);
+    }
+    return null;
+  }
+
+  Future<int> insertWorkoutSession(WorkoutSession session) async {
+    if (_usePostgres && _postgresDb != null) {
+      try {
+        final res = await _postgresDb!.execute(
+          pg.Sql.named(
+            'INSERT INTO workout_sessions (date, duration_minutes, energy_level, notes) VALUES (@date, @duration, @energy, @notes) '
+            'ON CONFLICT (date) DO UPDATE SET duration_minutes = EXCLUDED.duration_minutes, energy_level = EXCLUDED.energy_level, notes = EXCLUDED.notes '
+            'RETURNING id',
+          ),
+          parameters: {
+            'date': session.date,
+            'duration': session.duration,
+            'energy': session.energy.toInt(),
+            'notes': session.notes,
+          },
+        );
+        return res[0][0] as int;
+      } catch (e) {
+        // fallback
+      }
+    }
+
+    final existing = await getWorkoutSession(session.date);
+    if (existing != null) {
+      await _sqliteDb!.update(
+        'workout_sessions',
+        session.toJson(),
+        where: 'id = ?',
+        whereArgs: [existing.id],
+      );
+      return existing.id!;
+    }
+    return await _sqliteDb!.insert('workout_sessions', session.toJson());
+  }
+
+  Future<void> deleteWorkoutSession(int id) async {
+    if (_usePostgres && _postgresDb != null) {
+      try {
+        await _postgresDb!.execute(
+          pg.Sql.named('DELETE FROM workout_sessions WHERE id = @id'),
+          parameters: {'id': id},
+        );
+        return;
+      } catch (e) {
+        // fallback
+      }
+    }
+    await _sqliteDb!.delete('workout_sessions', where: 'id = ?', whereArgs: [id]);
+  }
+
+  Future<List<WorkoutSession>> getAllWorkoutSessions() async {
+    if (_usePostgres && _postgresDb != null) {
+      try {
+        final result = await _postgresDb!.execute(
+          'SELECT id, date, duration_minutes, energy_level, notes FROM workout_sessions ORDER BY date ASC'
+        );
+        return result.map((row) {
+          String dateStr = row[1] is DateTime
+              ? "${(row[1] as DateTime).year}-${(row[1] as DateTime).month.toString().padLeft(2, '0')}-${(row[1] as DateTime).day.toString().padLeft(2, '0')}"
+              : row[1].toString();
+          return WorkoutSession(
+            id: row[0] as int?,
+            date: dateStr,
+            duration: row[2] as int,
+            energy: (row[3] as num).toDouble(),
+            notes: row[4] as String? ?? '',
+          );
+        }).toList();
+      } catch (e) {
+        // fallback
+      }
+    }
+
+    final List<Map<String, dynamic>> maps = await _sqliteDb!.query(
+      'workout_sessions',
+      orderBy: 'date ASC',
+    );
+    return maps.map((m) => WorkoutSession.fromJson(m)).toList();
+  }
+
   // ─── HISTORY DATA ──────────────────────────────────────────────────────────
   Future<List<WeightLog>> getWeightHistory() async {
     if (_usePostgres && _postgresDb != null) {
@@ -389,12 +582,17 @@ class DbService {
         final result = await _postgresDb!.execute(
           'SELECT id, date, weight, body_fat FROM weight_logs ORDER BY date ASC'
         );
-        return result.map((row) => WeightLog(
-          id: row[0] as int?,
-          date: row[1] as String,
-          weight: (row[2] as num).toDouble(),
-          bodyFat: row[3] != null ? (row[3] as num).toDouble() : null,
-        )).toList();
+        return result.map((row) {
+          String dateStr = row[1] is DateTime
+              ? "${(row[1] as DateTime).year}-${(row[1] as DateTime).month.toString().padLeft(2, '0')}-${(row[1] as DateTime).day.toString().padLeft(2, '0')}"
+              : row[1].toString();
+          return WeightLog(
+            id: row[0] as int?,
+            date: dateStr,
+            weight: (row[2] as num).toDouble(),
+            bodyFat: row[3] != null ? (row[3] as num).toDouble() : null,
+          );
+        }).toList();
       } catch (e) {
         // fallback
       }
@@ -410,13 +608,18 @@ class DbService {
     if (_usePostgres && _postgresDb != null) {
       try {
         final result = await _postgresDb!.execute(
-          'SELECT id, date, amount FROM water_logs ORDER BY date ASC'
+          'SELECT id, date, amount_ml FROM water_logs ORDER BY date ASC'
         );
-        return result.map((row) => WaterLog(
-          id: row[0] as int?,
-          date: row[1] as String,
-          amount: row[2] as int,
-        )).toList();
+        return result.map((row) {
+          String dateStr = row[1] is DateTime
+              ? "${(row[1] as DateTime).year}-${(row[1] as DateTime).month.toString().padLeft(2, '0')}-${(row[1] as DateTime).day.toString().padLeft(2, '0')}"
+              : row[1].toString();
+          return WaterLog(
+            id: row[0] as int?,
+            date: dateStr,
+            amount: row[2] as int,
+          );
+        }).toList();
       } catch (e) {
         // fallback
       }
@@ -432,16 +635,21 @@ class DbService {
     if (_usePostgres && _postgresDb != null) {
       try {
         final result = await _postgresDb!.execute(
-          'SELECT id, date, exercise_name, weight, reps, set_number FROM workout_logs ORDER BY date ASC'
+          'SELECT id, date, exercise_name, weight, reps, set_number FROM workouts ORDER BY date ASC'
         );
-        return result.map((row) => WorkoutLog(
-          id: row[0] as int?,
-          date: row[1] as String,
-          exerciseName: row[2] as String,
-          weight: (row[3] as num).toDouble(),
-          reps: row[4] as int,
-          setNumber: row[5] as int,
-        )).toList();
+        return result.map((row) {
+          String dateStr = row[1] is DateTime
+              ? "${(row[1] as DateTime).year}-${(row[1] as DateTime).month.toString().padLeft(2, '0')}-${(row[1] as DateTime).day.toString().padLeft(2, '0')}"
+              : row[1].toString();
+          return WorkoutLog(
+            id: row[0] as int?,
+            date: dateStr,
+            exerciseName: row[2] as String,
+            weight: (row[3] as num).toDouble(),
+            reps: row[4] as int,
+            setNumber: row[5] as int,
+          );
+        }).toList();
       } catch (e) {
         // fallback
       }
@@ -457,7 +665,7 @@ class DbService {
   Future<void> resetAllData() async {
     if (_usePostgres && _postgresDb != null) {
       try {
-        await _postgresDb!.execute('TRUNCATE TABLE food_logs, workout_logs, water_logs, weight_logs, workout_sessions RESTART IDENTITY');
+        await _postgresDb!.execute('TRUNCATE TABLE food_logs, workouts, water_logs, weight_logs, workout_sessions RESTART IDENTITY');
         return;
       } catch (e) {
         // fallback

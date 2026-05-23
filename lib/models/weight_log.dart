@@ -15,7 +15,7 @@ class WeightLog {
     return WeightLog(
       id: json['id'] as int?,
       date: json['date'] as String,
-      weight: (json['weight'] ?? 0.0) as double,
+      weight: (json['weight'] as num?)?.toDouble() ?? 0.0,
       bodyFat: json['body_fat'] != null ? (json['body_fat'] as num).toDouble() : (json['bodyFat'] != null ? (json['bodyFat'] as num).toDouble() : null),
     );
   }

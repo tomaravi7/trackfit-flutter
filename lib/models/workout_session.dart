@@ -18,7 +18,7 @@ class WorkoutSession {
       id: json['id'] as int?,
       date: json['date'] as String,
       duration: (json['duration'] ?? 0) as int,
-      energy: (json['energy'] ?? 0.0) as double,
+      energy: (json['energy'] as num?)?.toDouble() ?? 0.0,
       notes: json['notes'] ?? '',
     );
   }

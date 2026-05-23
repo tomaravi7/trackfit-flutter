@@ -20,7 +20,7 @@ class WorkoutLog {
       id: json['id'] as int?,
       date: json['date'] as String,
       exerciseName: json['exercise_name'] ?? json['exerciseName'] ?? '',
-      weight: (json['weight'] ?? 0.0) as double,
+      weight: (json['weight'] as num?)?.toDouble() ?? 0.0,
       reps: (json['reps'] ?? 0) as int,
       setNumber: (json['set_number'] ?? json['setNumber'] ?? 1) as int,
     );
