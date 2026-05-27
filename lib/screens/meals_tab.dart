@@ -1,4 +1,5 @@
 import 'dart:convert';
+import 'dart:math';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:shared_preferences/shared_preferences.dart';
@@ -154,8 +155,8 @@ class _MealsTabState extends State<MealsTab> {
           backgroundColor: isDark ? const Color(0xff121219) : Colors.white,
           shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(24)),
           title: const Text('Add Favorite Staple', style: TextStyle(fontWeight: FontWeight.bold, fontSize: 16)),
-          content: SizedBox(
-            width: 400,
+          content: Container(
+            width: min(400.0, MediaQuery.of(context).size.width * 0.95),
             child: SingleChildScrollView(
               child: Column(
                 mainAxisSize: MainAxisSize.min,
@@ -378,8 +379,8 @@ class _MealsTabState extends State<MealsTab> {
               backgroundColor: isDark ? const Color(0xff121219) : Colors.white,
               shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(24)),
               title: const Text('Log Food', style: TextStyle(fontWeight: FontWeight.bold, fontSize: 18)),
-              content: SizedBox(
-                width: 400,
+              content: Container(
+                width: min(400.0, MediaQuery.of(context).size.width * 0.95),
                 child: SingleChildScrollView(
                   child: Column(
                     mainAxisSize: MainAxisSize.min,
@@ -674,43 +675,58 @@ class _MealsTabState extends State<MealsTab> {
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            // Total Consumed glass card
             GlassCard(
               child: Row(
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: [
-                  Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: [
-                      Text(
-                        'TOTAL CONSUMED',
-                        style: TextStyle(
-                          fontSize: 10,
-                          fontWeight: FontWeight.bold,
-                          color: Colors.grey.shade500,
-                          letterSpacing: 1.2,
+                  Expanded(
+                    child: Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      mainAxisSize: MainAxisSize.min,
+                      children: [
+                        Text(
+                          'TOTAL CONSUMED',
+                          style: TextStyle(
+                            fontSize: 10,
+                            fontWeight: FontWeight.bold,
+                            color: Colors.grey.shade500,
+                            letterSpacing: 1.2,
+                          ),
+                          overflow: TextOverflow.ellipsis,
                         ),
-                      ),
-                      const SizedBox(height: 4),
-                      Text(
-                        '${state.totalConsumedCalories.round()} kcal',
-                        style: const TextStyle(fontSize: 20, fontWeight: FontWeight.bold),
-                      )
-                    ],
+                        const SizedBox(height: 4),
+                        FittedBox(
+                          fit: BoxFit.scaleDown,
+                          alignment: Alignment.centerLeft,
+                          child: Text(
+                            '${state.totalConsumedCalories.round()} kcal',
+                            style: const TextStyle(fontSize: 20, fontWeight: FontWeight.bold),
+                          ),
+                        )
+                      ],
+                    ),
                   ),
+                  const SizedBox(width: 8),
                   Container(
                     height: 40,
                     width: 1.0,
                     color: isDark ? Colors.white.withOpacity(0.08) : Colors.black.withOpacity(0.08),
                   ),
-                  Row(
-                    children: [
-                      _buildMacroSummary('Protein', state.totalConsumedProtein, Colors.orange),
-                      const SizedBox(width: 16),
-                      _buildMacroSummary('Carbs', state.totalConsumedCarbs, Colors.indigo),
-                      const SizedBox(width: 16),
-                      _buildMacroSummary('Fat', state.totalConsumedFat, Colors.yellow.shade700),
-                    ],
+                  const SizedBox(width: 8),
+                  Expanded(
+                    child: FittedBox(
+                      fit: BoxFit.scaleDown,
+                      alignment: Alignment.centerRight,
+                      child: Row(
+                        children: [
+                          _buildMacroSummary('Protein', state.totalConsumedProtein, Colors.orange),
+                          const SizedBox(width: 16),
+                          _buildMacroSummary('Carbs', state.totalConsumedCarbs, Colors.indigo),
+                          const SizedBox(width: 16),
+                          _buildMacroSummary('Fat', state.totalConsumedFat, Colors.yellow.shade700),
+                        ],
+                      ),
+                    ),
                   )
                 ],
               ),
@@ -725,15 +741,22 @@ class _MealsTabState extends State<MealsTab> {
                   Row(
                     mainAxisAlignment: MainAxisAlignment.spaceBetween,
                     children: [
-                      Column(
-                        crossAxisAlignment: CrossAxisAlignment.start,
-                        children: [
-                          const Text('Everyday Favorites', style: TextStyle(fontSize: 13, fontWeight: FontWeight.bold)),
-                          Text(
-                            '1-click to log staples · Hold to delete',
-                            style: TextStyle(fontSize: 10, color: isDark ? Colors.grey.shade500 : Colors.grey.shade600),
-                          ),
-                        ],
+                      Expanded(
+                        child: Column(
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          children: [
+                            const Text(
+                              'Everyday Favorites',
+                              style: TextStyle(fontSize: 13, fontWeight: FontWeight.bold),
+                              overflow: TextOverflow.ellipsis,
+                            ),
+                            Text(
+                              '1-click to log staples · Hold to delete',
+                              style: TextStyle(fontSize: 10, color: isDark ? Colors.grey.shade500 : Colors.grey.shade600),
+                              overflow: TextOverflow.ellipsis,
+                            ),
+                          ],
+                        ),
                       ),
                       // Dropdown selection for Favorites
                       SizedBox(

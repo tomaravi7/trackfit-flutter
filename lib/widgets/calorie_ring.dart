@@ -58,6 +58,7 @@ class _CalorieRingState extends State<CalorieRing> with SingleTickerProviderStat
 
   @override
   Widget build(BuildContext context) {
+    final isDark = Theme.of(context).brightness == Brightness.dark;
     return AnimatedBuilder(
       animation: _animation,
       builder: (context, child) {
@@ -65,6 +66,7 @@ class _CalorieRingState extends State<CalorieRing> with SingleTickerProviderStat
           size: const Size(150, 150),
           painter: _CalorieRingPainter(
             percentage: _animation.value,
+            isDark: isDark,
           ),
           child: SizedBox(
             width: 150,
@@ -117,8 +119,9 @@ class _CalorieRingState extends State<CalorieRing> with SingleTickerProviderStat
 
 class _CalorieRingPainter extends CustomPainter {
   final double percentage;
+  final bool isDark;
 
-  _CalorieRingPainter({required this.percentage});
+  _CalorieRingPainter({required this.percentage, required this.isDark});
 
   @override
   void paint(Canvas canvas, Size size) {
@@ -128,7 +131,9 @@ class _CalorieRingPainter extends CustomPainter {
 
     // 1. Draw base/track track
     final trackPaint = Paint()
-      ..color = const Color(0xff1d1d29).withOpacity(0.4)
+      ..color = isDark 
+          ? const Color(0xff1d1d29).withOpacity(0.4) 
+          : Colors.black.withOpacity(0.06)
       ..strokeWidth = 7.0
       ..style = PaintingStyle.stroke;
     canvas.drawCircle(center, radius, trackPaint);

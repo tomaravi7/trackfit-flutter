@@ -1,4 +1,5 @@
 import 'dart:async';
+import 'dart:math';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import '../services/state_service.dart';
@@ -54,8 +55,12 @@ class _WorkoutsTabState extends State<WorkoutsTab> {
   }
 
   String _formatTimer(int totalSecs) {
-    final mins = totalSecs ~/ 60;
+    final hours = totalSecs ~/ 3600;
+    final mins = (totalSecs % 3600) ~/ 60;
     final secs = totalSecs % 60;
+    if (hours > 0) {
+      return "${hours.toString().padLeft(2, '0')}:${mins.toString().padLeft(2, '0')}:${secs.toString().padLeft(2, '0')}";
+    }
     return "${mins.toString().padLeft(2, '0')}:${secs.toString().padLeft(2, '0')}";
   }
 
@@ -91,8 +96,8 @@ class _WorkoutsTabState extends State<WorkoutsTab> {
                     : 'Log Set',
                 style: TextStyle(fontWeight: FontWeight.bold, color: textThemeColor, fontSize: 16),
               ),
-              content: SizedBox(
-                width: 320,
+              content: Container(
+                width: min(320.0, MediaQuery.of(context).size.width * 0.95),
                 child: SingleChildScrollView(
                   child: Column(
                     mainAxisSize: MainAxisSize.min,
@@ -444,7 +449,7 @@ class _WorkoutsTabState extends State<WorkoutsTab> {
   void _showLogSessionDialog(StateService state, {WorkoutSession? existingSession}) {
     final durationCtrl = TextEditingController(
       text: existingSession?.duration.toString() ?? 
-           (_secondsElapsed > 0 ? (_secondsElapsed ~/ 60).toString() : '45')
+           (_secondsElapsed > 0 ? max(1, _secondsElapsed ~/ 60).toString() : '45')
     );
     final notesCtrl = TextEditingController(text: existingSession?.notes ?? '');
     double energyLevel = existingSession?.energy ?? 4.0;
@@ -467,8 +472,8 @@ class _WorkoutsTabState extends State<WorkoutsTab> {
               backgroundColor: isDark ? const Color(0xff121219) : Colors.white,
               shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(24)),
               title: Text(existingSession != null ? 'Edit Workout Session' : 'Log Workout Session', style: const TextStyle(fontWeight: FontWeight.bold, fontSize: 16)),
-              content: SizedBox(
-                width: 350,
+              content: Container(
+                width: min(350.0, MediaQuery.of(context).size.width * 0.95),
                 child: SingleChildScrollView(
                   child: Column(
                     mainAxisSize: MainAxisSize.min,
@@ -678,13 +683,24 @@ class _WorkoutsTabState extends State<WorkoutsTab> {
                 child: Row(
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   children: [
-                    Column(
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      children: [
-                        const Text('No Session Summary Logged', style: TextStyle(fontSize: 12, fontWeight: FontWeight.bold)),
-                        Text('Log duration, energy, and notes for today.', style: TextStyle(fontSize: 10, color: Colors.grey.shade500)),
-                      ],
+                    Expanded(
+                      child: Column(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: [
+                          const Text(
+                            'No Session Summary Logged',
+                            style: TextStyle(fontSize: 12, fontWeight: FontWeight.bold),
+                            overflow: TextOverflow.ellipsis,
+                          ),
+                          Text(
+                            'Log duration, energy, and notes for today.',
+                            style: TextStyle(fontSize: 10, color: Colors.grey.shade500),
+                            overflow: TextOverflow.ellipsis,
+                          ),
+                        ],
+                      ),
                     ),
+                    const SizedBox(width: 8),
                     ElevatedButton(
                       style: ElevatedButton.styleFrom(
                         backgroundColor: const Color(0xff4f46e5).withOpacity(0.15),
@@ -742,7 +758,14 @@ class _WorkoutsTabState extends State<WorkoutsTab> {
                           child: Row(
                             mainAxisAlignment: MainAxisAlignment.spaceBetween,
                             children: [
-                              Text(exName, style: const TextStyle(fontSize: 13, fontWeight: FontWeight.bold)),
+                              Expanded(
+                                child: Text(
+                                  exName,
+                                  style: const TextStyle(fontSize: 13, fontWeight: FontWeight.bold),
+                                  overflow: TextOverflow.ellipsis,
+                                ),
+                              ),
+                              const SizedBox(width: 8),
                               Text(
                                 '${sets.length} sets',
                                 style: TextStyle(fontSize: 11, color: isDark ? Colors.grey.shade500 : Colors.grey.shade500),
@@ -804,7 +827,7 @@ class _WorkoutsTabState extends State<WorkoutsTab> {
                     ),
                   ),
                 );
-              }).toList(),
+              }),
             const SizedBox(height: 60), // padding for FAB
           ],
         ),

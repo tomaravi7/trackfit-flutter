@@ -298,12 +298,15 @@ class _SettingsTabState extends State<SettingsTab> {
                         color: state.isDemoMode ? Colors.amber : Colors.indigo
                       ),
                       const SizedBox(width: 8),
-                      Text(
-                        state.isDemoMode ? 'Local Storage Mode' : 'Remote Postgres Sync Active',
-                        style: TextStyle(
-                          fontSize: 11,
-                          fontWeight: FontWeight.bold,
-                          color: state.isDemoMode ? Colors.amber.shade300 : Colors.indigo.shade300
+                      Expanded(
+                        child: Text(
+                          state.isDemoMode ? 'Local Storage Mode' : 'Remote Postgres Sync Active',
+                          style: TextStyle(
+                            fontSize: 11,
+                            fontWeight: FontWeight.bold,
+                            color: state.isDemoMode ? Colors.amber.shade300 : Colors.indigo.shade300
+                          ),
+                          overflow: TextOverflow.ellipsis,
                         ),
                       ),
                     ],
@@ -344,22 +347,24 @@ class _SettingsTabState extends State<SettingsTab> {
                     ),
                     if (!state.isDemoMode) ...[
                       const SizedBox(width: 8),
-                      ElevatedButton(
-                        onPressed: () {
-                          state.disconnectPostgres();
-                          _postgresController.clear();
-                          setState(() => _postgresMessage = 'Reverted to local SQLite DB.');
-                        },
-                        style: ElevatedButton.styleFrom(
-                          backgroundColor: Colors.redAccent.withOpacity(0.12),
-                          foregroundColor: Colors.redAccent,
-                          shadowColor: Colors.transparent,
-                          shape: RoundedRectangleBorder(
-                            borderRadius: BorderRadius.circular(12),
-                            side: const BorderSide(color: Colors.redAccent),
+                      Expanded(
+                        child: ElevatedButton(
+                          onPressed: () {
+                            state.disconnectPostgres();
+                            _postgresController.clear();
+                            setState(() => _postgresMessage = 'Reverted to local SQLite DB.');
+                          },
+                          style: ElevatedButton.styleFrom(
+                            backgroundColor: Colors.redAccent.withOpacity(0.12),
+                            foregroundColor: Colors.redAccent,
+                            shadowColor: Colors.transparent,
+                            shape: RoundedRectangleBorder(
+                              borderRadius: BorderRadius.circular(12),
+                              side: const BorderSide(color: Colors.redAccent),
+                            ),
                           ),
+                          child: const Text('Disconnect', style: TextStyle(fontSize: 12, fontWeight: FontWeight.bold)),
                         ),
-                        child: const Text('Disconnect', style: TextStyle(fontSize: 12, fontWeight: FontWeight.bold)),
                       ),
                     ]
                   ],

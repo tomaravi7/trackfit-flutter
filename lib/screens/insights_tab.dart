@@ -5,9 +5,6 @@ import 'package:fl_chart/fl_chart.dart';
 import 'package:intl/intl.dart';
 import '../services/state_service.dart';
 import '../models/weight_log.dart';
-import '../models/food_log.dart';
-import '../models/water_log.dart';
-import '../models/workout_log.dart';
 import '../widgets/glass_card.dart';
 import '../widgets/body_heatmap.dart';
 
@@ -340,9 +337,15 @@ class _InsightsTabState extends State<InsightsTab> {
               child: GlassCard(
                 child: Column(
                   children: [
-                    const Text('AVG INTAKE', style: TextStyle(fontSize: 10, color: Colors.grey, fontWeight: FontWeight.bold)),
+                    const FittedBox(
+                      fit: BoxFit.scaleDown,
+                      child: Text('AVG INTAKE', style: TextStyle(fontSize: 10, color: Colors.grey, fontWeight: FontWeight.bold)),
+                    ),
                     const SizedBox(height: 4),
-                    Text('${avgCals.round()} kcal', style: const TextStyle(fontSize: 14, fontWeight: FontWeight.bold)),
+                    FittedBox(
+                      fit: BoxFit.scaleDown,
+                      child: Text('${avgCals.round()} kcal', style: const TextStyle(fontSize: 14, fontWeight: FontWeight.bold)),
+                    ),
                   ],
                 ),
               ),
@@ -352,9 +355,15 @@ class _InsightsTabState extends State<InsightsTab> {
               child: GlassCard(
                 child: Column(
                   children: [
-                    const Text('PEAK', style: TextStyle(fontSize: 10, color: Colors.grey, fontWeight: FontWeight.bold)),
+                    const FittedBox(
+                      fit: BoxFit.scaleDown,
+                      child: Text('PEAK', style: TextStyle(fontSize: 10, color: Colors.grey, fontWeight: FontWeight.bold)),
+                    ),
                     const SizedBox(height: 4),
-                    Text('${maxCals.round()} kcal', style: const TextStyle(fontSize: 14, fontWeight: FontWeight.bold)),
+                    FittedBox(
+                      fit: BoxFit.scaleDown,
+                      child: Text('${maxCals.round()} kcal', style: const TextStyle(fontSize: 14, fontWeight: FontWeight.bold)),
+                    ),
                   ],
                 ),
               ),
@@ -364,9 +373,15 @@ class _InsightsTabState extends State<InsightsTab> {
               child: GlassCard(
                 child: Column(
                   children: [
-                    const Text('TARGET', style: TextStyle(fontSize: 10, color: Colors.grey, fontWeight: FontWeight.bold)),
+                    const FittedBox(
+                      fit: BoxFit.scaleDown,
+                      child: Text('TARGET', style: TextStyle(fontSize: 10, color: Colors.grey, fontWeight: FontWeight.bold)),
+                    ),
                     const SizedBox(height: 4),
-                    Text('${state.goals.calories.round()} kcal', style: const TextStyle(fontSize: 14, fontWeight: FontWeight.bold, color: Color(0xff818cf8))),
+                    FittedBox(
+                      fit: BoxFit.scaleDown,
+                      child: Text('${state.goals.calories.round()} kcal', style: const TextStyle(fontSize: 14, fontWeight: FontWeight.bold, color: Color(0xff818cf8))),
+                    ),
                   ],
                 ),
               ),
@@ -517,9 +532,15 @@ class _InsightsTabState extends State<InsightsTab> {
               child: GlassCard(
                 child: Column(
                   children: [
-                    const Text('AVG WEIGHT', style: TextStyle(fontSize: 10, color: Colors.grey, fontWeight: FontWeight.bold)),
+                    const FittedBox(
+                      fit: BoxFit.scaleDown,
+                      child: Text('AVG WEIGHT', style: TextStyle(fontSize: 10, color: Colors.grey, fontWeight: FontWeight.bold)),
+                    ),
                     const SizedBox(height: 4),
-                    Text('${avgWeight.toStringAsFixed(1)} ${state.weightUnit}', style: const TextStyle(fontSize: 14, fontWeight: FontWeight.bold)),
+                    FittedBox(
+                      fit: BoxFit.scaleDown,
+                      child: Text('${avgWeight.toStringAsFixed(1)} ${state.weightUnit}', style: const TextStyle(fontSize: 14, fontWeight: FontWeight.bold)),
+                    ),
                   ],
                 ),
               ),
@@ -529,9 +550,15 @@ class _InsightsTabState extends State<InsightsTab> {
               child: GlassCard(
                 child: Column(
                   children: [
-                    const Text('LOWEST', style: TextStyle(fontSize: 10, color: Colors.grey, fontWeight: FontWeight.bold)),
+                    const FittedBox(
+                      fit: BoxFit.scaleDown,
+                      child: Text('LOWEST', style: TextStyle(fontSize: 10, color: Colors.grey, fontWeight: FontWeight.bold)),
+                    ),
                     const SizedBox(height: 4),
-                    Text('${minWeight.toStringAsFixed(1)} ${state.weightUnit}', style: const TextStyle(fontSize: 14, fontWeight: FontWeight.bold, color: Colors.green)),
+                    FittedBox(
+                      fit: BoxFit.scaleDown,
+                      child: Text('${minWeight.toStringAsFixed(1)} ${state.weightUnit}', style: const TextStyle(fontSize: 14, fontWeight: FontWeight.bold, color: Colors.green)),
+                    ),
                   ],
                 ),
               ),
@@ -541,9 +568,15 @@ class _InsightsTabState extends State<InsightsTab> {
               child: GlassCard(
                 child: Column(
                   children: [
-                    const Text('HIGHEST', style: TextStyle(fontSize: 10, color: Colors.grey, fontWeight: FontWeight.bold)),
+                    const FittedBox(
+                      fit: BoxFit.scaleDown,
+                      child: Text('HIGHEST', style: TextStyle(fontSize: 10, color: Colors.grey, fontWeight: FontWeight.bold)),
+                    ),
                     const SizedBox(height: 4),
-                    Text('${maxWeight.toStringAsFixed(1)} ${state.weightUnit}', style: const TextStyle(fontSize: 14, fontWeight: FontWeight.bold, color: Colors.orange)),
+                    FittedBox(
+                      fit: BoxFit.scaleDown,
+                      child: Text('${maxWeight.toStringAsFixed(1)} ${state.weightUnit}', style: const TextStyle(fontSize: 14, fontWeight: FontWeight.bold, color: Colors.orange)),
+                    ),
                   ],
                 ),
               ),
@@ -668,9 +701,15 @@ class _InsightsTabState extends State<InsightsTab> {
               child: GlassCard(
                 child: Column(
                   children: [
-                    const Text('AVG HYDRATION', style: TextStyle(fontSize: 10, color: Colors.grey, fontWeight: FontWeight.bold)),
+                    const FittedBox(
+                      fit: BoxFit.scaleDown,
+                      child: Text('AVG HYDRATION', style: TextStyle(fontSize: 10, color: Colors.grey, fontWeight: FontWeight.bold)),
+                    ),
                     const SizedBox(height: 4),
-                    Text('${avgWater.round()} ml', style: const TextStyle(fontSize: 14, fontWeight: FontWeight.bold)),
+                    FittedBox(
+                      fit: BoxFit.scaleDown,
+                      child: Text('${avgWater.round()} ml', style: const TextStyle(fontSize: 14, fontWeight: FontWeight.bold)),
+                    ),
                   ],
                 ),
               ),
@@ -680,9 +719,15 @@ class _InsightsTabState extends State<InsightsTab> {
               child: GlassCard(
                 child: Column(
                   children: [
-                    const Text('PEAK', style: TextStyle(fontSize: 10, color: Colors.grey, fontWeight: FontWeight.bold)),
+                    const FittedBox(
+                      fit: BoxFit.scaleDown,
+                      child: Text('PEAK', style: TextStyle(fontSize: 10, color: Colors.grey, fontWeight: FontWeight.bold)),
+                    ),
                     const SizedBox(height: 4),
-                    Text('${maxWater.round()} ml', style: const TextStyle(fontSize: 14, fontWeight: FontWeight.bold)),
+                    FittedBox(
+                      fit: BoxFit.scaleDown,
+                      child: Text('${maxWater.round()} ml', style: const TextStyle(fontSize: 14, fontWeight: FontWeight.bold)),
+                    ),
                   ],
                 ),
               ),
@@ -692,9 +737,15 @@ class _InsightsTabState extends State<InsightsTab> {
               child: GlassCard(
                 child: Column(
                   children: [
-                    const Text('TARGET', style: TextStyle(fontSize: 10, color: Colors.grey, fontWeight: FontWeight.bold)),
+                    const FittedBox(
+                      fit: BoxFit.scaleDown,
+                      child: Text('TARGET', style: TextStyle(fontSize: 10, color: Colors.grey, fontWeight: FontWeight.bold)),
+                    ),
                     const SizedBox(height: 4),
-                    Text('${state.waterGoalMl} ml', style: const TextStyle(fontSize: 14, fontWeight: FontWeight.bold, color: Colors.lightBlue)),
+                    FittedBox(
+                      fit: BoxFit.scaleDown,
+                      child: Text('${state.waterGoalMl} ml', style: const TextStyle(fontSize: 14, fontWeight: FontWeight.bold, color: Colors.lightBlue)),
+                    ),
                   ],
                 ),
               ),
@@ -834,13 +885,13 @@ class _InsightsTabState extends State<InsightsTab> {
               ),
               const SizedBox(height: 8),
 
-              Row(
-                mainAxisAlignment: MainAxisAlignment.center,
+              Wrap(
+                alignment: WrapAlignment.center,
+                spacing: 16,
+                runSpacing: 4,
                 children: [
                   _buildLegendItem('🍏 Diet Goal'),
-                  const SizedBox(width: 16),
                   _buildLegendItem('💧 Water Goal'),
-                  const SizedBox(width: 16),
                   _buildLegendItem('🏋️ Workout'),
                 ],
               ),

@@ -371,6 +371,11 @@ class StateService extends ChangeNotifier {
     await loadActiveDateData();
   }
 
+  Future<void> deleteWeight(int id) async {
+    await _db.deleteWeightLog(id);
+    await loadActiveDateData();
+  }
+
   Future<void> logWorkoutSession(WorkoutSession session) async {
     await _db.insertWorkoutSession(session);
     await loadActiveDateData();

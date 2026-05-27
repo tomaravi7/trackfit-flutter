@@ -17,7 +17,7 @@ class DbService {
   sql.Database? _sqliteDb;
   pg.Connection? _postgresDb;
   bool _usePostgres = false;
-  String _currentConnString = '';
+
 
   // Helper to parse PostgreSQL URI
   Map<String, dynamic>? _parsePostgresUrl(String url) {
@@ -39,7 +39,7 @@ class DbService {
   Future<void> init() async {
     final prefs = await SharedPreferences.getInstance();
     final connStr = prefs.getString('trackfit_postgres_conn') ?? '';
-    _currentConnString = connStr;
+
 
     if (connStr.isNotEmpty) {
       final params = _parsePostgresUrl(connStr);
@@ -454,6 +454,21 @@ class DbService {
       return existing.id!;
     }
     return await _sqliteDb!.insert('weight_logs', log.toJson());
+  }
+
+  Future<void> deleteWeightLog(int id) async {
+    if (_usePostgres && _postgresDb != null) {
+      try {
+        await _postgresDb!.execute(
+          pg.Sql.named('DELETE FROM weight_logs WHERE id = @id'),
+          parameters: {'id': id},
+        );
+        return;
+      } catch (e) {
+        // fallback
+      }
+    }
+    await _sqliteDb!.delete('weight_logs', where: 'id = ?', whereArgs: [id]);
   }
 
   // ─── WORKOUT SESSIONS ──────────────────────────────────────────────────────

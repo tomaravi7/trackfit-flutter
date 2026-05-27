@@ -28,7 +28,6 @@ class _OverviewTabState extends State<OverviewTab> {
   @override
   Widget build(BuildContext context) {
     final state = Provider.of<StateService>(context);
-    final isDark = state.isDark;
 
     final double remainingCals = (state.goals.calories - state.totalConsumedCalories).clamp(0.0, double.infinity);
     final weightLog = state.weightLog;
@@ -278,10 +277,26 @@ class _OverviewTabState extends State<OverviewTab> {
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
           Row(
+            mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: [
-              Icon(Icons.monitor_weight, size: 16, color: Colors.purple.shade400),
-              const SizedBox(width: 6),
-              const Text('Weight', style: TextStyle(fontSize: 13, fontWeight: FontWeight.bold)),
+              Row(
+                children: [
+                  Icon(Icons.monitor_weight, size: 16, color: Colors.purple.shade400),
+                  const SizedBox(width: 6),
+                  const Text('Weight', style: TextStyle(fontSize: 13, fontWeight: FontWeight.bold)),
+                ],
+              ),
+              if (log != null)
+                IconButton(
+                  icon: const Icon(Icons.delete_outline, size: 16, color: Colors.redAccent),
+                  padding: EdgeInsets.zero,
+                  constraints: const BoxConstraints(),
+                  onPressed: () {
+                    if (log.id != null) {
+                      state.deleteWeight(log.id!);
+                    }
+                  },
+                ),
             ],
           ),
           const SizedBox(height: 8),
