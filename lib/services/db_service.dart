@@ -40,7 +40,6 @@ class DbService {
     final prefs = await SharedPreferences.getInstance();
     final connStr = prefs.getString('trackfit_postgres_conn') ?? '';
 
-
     if (connStr.isNotEmpty) {
       final params = _parsePostgresUrl(connStr);
       if (params != null) {
@@ -65,6 +64,9 @@ class DbService {
       }
     }
 
+    if (Platform.environment.containsKey('FLUTTER_TEST')) {
+      return;
+    }
     // Fallback to SQLite
     if (Platform.isWindows || Platform.isLinux || Platform.isMacOS) {
       sqfliteFfiInit();

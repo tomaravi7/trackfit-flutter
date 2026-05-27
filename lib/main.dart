@@ -1,8 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
-import 'package:google_fonts/google_fonts.dart';
 import 'services/state_service.dart';
 import 'screens/main_screen.dart';
+import 'screens/onboarding_screen.dart';
+import 'utils/app_fonts.dart';
 
 void main() {
   WidgetsFlutterBinding.ensureInitialized();
@@ -36,14 +37,14 @@ class TrackFitApp extends StatelessWidget {
           surface: Colors.white,
         ),
         scaffoldBackgroundColor: const Color(0xfff9fafb),
-        textTheme: GoogleFonts.interTextTheme(ThemeData.light().textTheme).copyWith(
-          titleLarge: GoogleFonts.plusJakartaSans(
+        textTheme: AppFonts.interTextTheme(ThemeData.light().textTheme).copyWith(
+          titleLarge: AppFonts.plusJakartaSans(
             textStyle: ThemeData.light().textTheme.titleLarge?.copyWith(
                   fontWeight: FontWeight.bold,
                   letterSpacing: -0.5,
                 ),
           ),
-          headlineMedium: GoogleFonts.plusJakartaSans(
+          headlineMedium: AppFonts.plusJakartaSans(
             textStyle: ThemeData.light().textTheme.headlineMedium?.copyWith(
                   fontWeight: FontWeight.w800,
                   letterSpacing: -1.0,
@@ -63,15 +64,15 @@ class TrackFitApp extends StatelessWidget {
           surface: Color(0xff0d0d12),
         ),
         scaffoldBackgroundColor: const Color(0xff07070c),
-        textTheme: GoogleFonts.interTextTheme(ThemeData.dark().textTheme).copyWith(
-          titleLarge: GoogleFonts.plusJakartaSans(
+        textTheme: AppFonts.interTextTheme(ThemeData.dark().textTheme).copyWith(
+          titleLarge: AppFonts.plusJakartaSans(
             textStyle: ThemeData.dark().textTheme.titleLarge?.copyWith(
                   fontWeight: FontWeight.bold,
                   letterSpacing: -0.5,
                   color: Colors.white,
                 ),
           ),
-          headlineMedium: GoogleFonts.plusJakartaSans(
+          headlineMedium: AppFonts.plusJakartaSans(
             textStyle: ThemeData.dark().textTheme.headlineMedium?.copyWith(
                   fontWeight: FontWeight.w800,
                   letterSpacing: -1.0,
@@ -82,7 +83,14 @@ class TrackFitApp extends StatelessWidget {
         dividerColor: const Color(0xff1b1b26),
       ),
       
-      home: const MainScreen(),
+      home: state.isLoading
+          ? Scaffold(
+              backgroundColor: state.isDark ? const Color(0xff07070c) : const Color(0xfff9fafb),
+              body: const Center(
+                child: CircularProgressIndicator(color: Color(0xff4f46e5)),
+              ),
+            )
+          : (state.showOnboarding ? const OnboardingScreen() : const MainScreen()),
     );
   }
 }

@@ -145,6 +145,56 @@ class _SettingsTabState extends State<SettingsTab> {
           ),
           const SizedBox(height: 12),
 
+          // 1.5. APP TUTORIAL CARD
+          GlassCard(
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                Row(
+                  children: [
+                    Icon(
+                      Icons.help_outline, 
+                      size: 16, 
+                      color: isDark ? Colors.indigo.shade400 : Colors.indigo.shade700
+                    ),
+                    const SizedBox(width: 8),
+                    const Text('App Tutorial', style: TextStyle(fontSize: 13, fontWeight: FontWeight.bold)),
+                  ],
+                ),
+                const SizedBox(height: 4),
+                Text(
+                  'Watch the onboarding guide to learn how to navigate and use TrackFit.',
+                  style: TextStyle(fontSize: 10, color: isDark ? Colors.grey.shade500 : Colors.grey.shade600),
+                ),
+                const SizedBox(height: 12),
+                ElevatedButton.icon(
+                  onPressed: () {
+                    state.resetOnboarding();
+                    ScaffoldMessenger.of(context).showSnackBar(
+                      const SnackBar(
+                        content: Text('Tutorial reset! Replaying guide...'),
+                        duration: Duration(seconds: 1),
+                      ),
+                    );
+                  },
+                  icon: const Icon(Icons.play_circle_outline, size: 16),
+                  label: const Text('Replay Onboarding Guide'),
+                  style: ElevatedButton.styleFrom(
+                    backgroundColor: isDark ? const Color(0xff181822) : Colors.grey.shade100,
+                    foregroundColor: isDark ? Colors.grey.shade300 : Colors.grey.shade800,
+                    minimumSize: const Size(double.infinity, 38),
+                    shadowColor: Colors.transparent,
+                    shape: RoundedRectangleBorder(
+                      borderRadius: BorderRadius.circular(12),
+                      side: BorderSide(color: isDark ? const Color(0xff242436) : Colors.grey.shade200),
+                    ),
+                  ),
+                ),
+              ],
+            ),
+          ),
+          const SizedBox(height: 12),
+
           // 2. WELLNESS PREFERENCES
           GlassCard(
             child: Column(

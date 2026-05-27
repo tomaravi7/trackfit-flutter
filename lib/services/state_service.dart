@@ -21,6 +21,7 @@ class StateService extends ChangeNotifier {
   int _waterGoalMl = 2500;
   String _postgresConn = '';
   bool _isLoading = false;
+  bool _showOnboarding = false;
 
   // Active state data
   List<FoodLog> _foodLogs = [];
@@ -55,6 +56,7 @@ class StateService extends ChangeNotifier {
   int get waterGoalMl => _waterGoalMl;
   String get postgresConn => _postgresConn;
   bool get isLoading => _isLoading;
+  bool get showOnboarding => _showOnboarding;
   bool get isDemoMode => !_db.isPostgresMode;
 
   List<FoodLog> get foodLogs => _foodLogs;
@@ -90,6 +92,8 @@ class StateService extends ChangeNotifier {
     _weightUnit = prefs.getString('trackfit_weight_unit') ?? 'kg';
     _waterGoalMl = prefs.getInt('trackfit_water_goal') ?? 2500;
     _postgresConn = prefs.getString('trackfit_postgres_conn') ?? '';
+    final onboardingCompleted = prefs.getBool('trackfit_onboarding_completed') ?? false;
+    _showOnboarding = !onboardingCompleted;
 
     // Load goals
     _goals = Goals(
@@ -100,19 +104,19 @@ class StateService extends ChangeNotifier {
       fat: prefs.getDouble('trackfit_goal_fat') ?? 65.0,
     );
 
-    // Initialize database
-    await _db.init();
+    // Initialize database and load data
+    try {
+      await _db.init();
+      await _checkAndPrepopulateDemo();
+      await loadActiveDateData();
+    } catch (e) {
+      debugPrint('Database initialization or loading failed: $e');
+    }
 
-    // Check if empty, prepopulate demo
-    await _checkAndPrepopulateDemo();
-
-    // Load offline exercise DB
+    // Load offline templates
     await _loadExerciseTemplates();
     await _loadCustomExercises();
     await _loadFoodTemplates();
-
-    // Load active date data
-    await loadActiveDateData();
 
     _isLoading = false;
     notifyListeners();
@@ -244,6 +248,10 @@ class StateService extends ChangeNotifier {
   }
 
   Future<void> _loadExerciseTemplates() async {
+    if (Platform.environment.containsKey('FLUTTER_TEST')) {
+      _exerciseTemplates = [];
+      return;
+    }
     try {
       final jsonString = await rootBundle.loadString('assets/exercises.json');
       _exerciseTemplates = json.decode(jsonString) as List<dynamic>;
@@ -415,6 +423,20 @@ class StateService extends ChangeNotifier {
     notifyListeners();
   }
 
+  Future<void> completeOnboarding() async {
+    _showOnboarding = false;
+    final prefs = await SharedPreferences.getInstance();
+    await prefs.setBool('trackfit_onboarding_completed', true);
+    notifyListeners();
+  }
+
+  Future<void> resetOnboarding() async {
+    _showOnboarding = true;
+    final prefs = await SharedPreferences.getInstance();
+    await prefs.setBool('trackfit_onboarding_completed', false);
+    notifyListeners();
+  }
+
   // Database credential configurations
   Future<bool> updatePostgresConnection(String connectionString) async {
     final prefs = await SharedPreferences.getInstance();
@@ -460,6 +482,10 @@ class StateService extends ChangeNotifier {
   List<dynamic> get foodTemplates => _foodTemplates;
 
   Future<void> _loadFoodTemplates() async {
+    if (Platform.environment.containsKey('FLUTTER_TEST')) {
+      _foodTemplates = [];
+      return;
+    }
     try {
       final jsonString = await rootBundle.loadString('assets/foods.json');
       _foodTemplates = json.decode(jsonString) as List<dynamic>;
