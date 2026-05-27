@@ -4,6 +4,71 @@ This is a complete mobile port of the TrackFit fitness application in Flutter. I
 
 ---
 
+## Getting Started
+
+### Prerequisites
+
+- **Flutter SDK** (stable, >=3.0.0) — [install guide](https://docs.flutter.dev/get-started/install)
+- **Android**: Android Studio or Android SDK command-line tools
+- **iOS** (macOS only): Xcode 14+, CocoaPods
+
+### Clone
+
+```bash
+git clone https://github.com/tomaravi7/trackfit-flutter.git
+cd trackfit-flutter
+flutter pub get
+```
+
+---
+
+## Build for Android
+
+```bash
+flutter build apk --debug
+```
+
+The APK will be at:
+```
+build/app/outputs/flutter-apk/app-debug.apk
+```
+
+To build a release version (requires a signing key):
+```bash
+flutter build apk --release
+```
+
+> **Debug APK size** is ~150 MB. A release build will be significantly smaller.
+
+---
+
+## Build for iOS (macOS only)
+
+```bash
+cd ios
+pod install
+cd ..
+flutter build ios --debug
+```
+
+Then open `ios/Runner.xcworkspace` in Xcode, select a simulator or a connected device, and run the app (Product → Run).
+
+For a release build:
+```bash
+flutter build ios --release --no-codesign
+```
+
+---
+
+## Run Directly (any platform)
+
+With a connected device or emulator:
+```bash
+flutter run
+```
+
+---
+
 ## Features
 
 - **Glow Calorie Target Ring**: Custom-drawn circular progress ring with neon gradient blur filters.
