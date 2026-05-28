@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:google_fonts/google_fonts.dart';
 
 class AppFonts {
   static bool useGoogleFonts = true;
@@ -12,23 +11,14 @@ class AppFonts {
     double? height,
     double? letterSpacing,
   }) {
-    if (!useGoogleFonts) {
-      return (textStyle ?? const TextStyle()).copyWith(
-        color: color,
-        fontSize: fontSize,
-        fontWeight: fontWeight,
-        height: height,
-        letterSpacing: letterSpacing,
-        fontFamily: 'Roboto',
-      );
-    }
-    return GoogleFonts.inter(
-      textStyle: textStyle,
+    final family = useGoogleFonts ? 'Inter' : 'Roboto';
+    return (textStyle ?? const TextStyle()).copyWith(
       color: color,
       fontSize: fontSize,
       fontWeight: fontWeight,
       height: height,
       letterSpacing: letterSpacing,
+      fontFamily: family,
     );
   }
 
@@ -40,30 +30,22 @@ class AppFonts {
     double? height,
     double? letterSpacing,
   }) {
-    if (!useGoogleFonts) {
-      return (textStyle ?? const TextStyle()).copyWith(
-        color: color,
-        fontSize: fontSize,
-        fontWeight: fontWeight,
-        height: height,
-        letterSpacing: letterSpacing,
-        fontFamily: 'Roboto',
-      );
-    }
-    return GoogleFonts.plusJakartaSans(
-      textStyle: textStyle,
+    final family = useGoogleFonts ? 'Plus Jakarta Sans' : 'Roboto';
+    return (textStyle ?? const TextStyle()).copyWith(
       color: color,
       fontSize: fontSize,
       fontWeight: fontWeight,
       height: height,
       letterSpacing: letterSpacing,
+      fontFamily: family,
     );
   }
 
   static TextTheme interTextTheme([TextTheme? textTheme]) {
+    final base = textTheme ?? const TextTheme();
     if (!useGoogleFonts) {
-      return textTheme ?? const TextTheme();
+      return base;
     }
-    return GoogleFonts.interTextTheme(textTheme);
+    return base.apply(fontFamily: 'Inter');
   }
 }
